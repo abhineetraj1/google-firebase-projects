@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Realtime Chat App</title>
+	<script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-database.js"></script>
+	<script>
+		// Initialize Firebase
+		var firebaseConfig = {
+			apiKey: "YOUR_API_KEY",
+			authDomain: "YOUR_AUTH_DOMAIN",
+			databaseURL: "YOUR_DATABASE_URL",
+			projectId: "YOUR_PROJECT_ID",
+			storageBucket: "YOUR_STORAGE_BUCKET",
+			messagingSenderId: "YOUR_SENDER_ID",
+			appId: "YOUR_APP_ID"
+		};
+		firebase.initializeApp(firebaseConfig);
+
+		// Check if user is logged in
+		firebase.auth().onAuthStateChanged(function(user) {
+			if (!user) {
+				window.location = 'login.html';
+			}
+		});
+	</script>
+</head>
+<body>
+	<h1>Realtime Chat App</h1>
+	<p>Welcome, <span id="userName"></span>!</p>
+	<form id="messageForm">
+		<label for="message">Message:</label>
+		<input type="text" id="message" name="message" required>
+		<button type="submit">Send</button>
+	</form>
+	<ul id="messageList"></ul>
+
+	<script>
+		// Get the current user's name and display it on the page
+		var currentUser = firebase.auth().currentUser;
+		document.getElementById('userName').textContent = currentUser.email;
+
+		// Listen for new messages and display them on the page
+		var messageList = document.getElementById('messageList');
+		var messagesRef = firebase.database().ref('messages');
+		messagesRef.on('child_added', function(data) {
+			var message = data.val();
+			var li = document.createElement('li');
+			li.textContent = message.sender + ': ' + message;
+			// message.text;
+			messageList.appendChild(li);
+		});
+	// Message form submit event listener
+	document.getElementById('messageForm').addEventListener('submit', function(e) {
+		e.preventDefault();
+		var currentUser = firebase.auth().currentUser;
+		var message = document.getElementById('message').value;
+		firebase.database().ref('messages').push({
+			sender: currentUser.email,
+			text: message
+		});
+		document.getElementById('message').value = '';
+	});
+</script>

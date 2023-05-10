@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Realtime Chat App</title>
+	<script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-database.js"></script>
+	<script>
+		// Initialize Firebase
+		var firebaseConfig = {
+			apiKey: "YOUR_API_KEY",
+			authDomain: "YOUR_AUTH_DOMAIN",
+			databaseURL: "YOUR_DATABASE_URL",
+			projectId: "YOUR_PROJECT_ID",
+			storageBucket: "YOUR_STORAGE_BUCKET",
+			messagingSenderId: "YOUR_SENDER_ID",
+			appId: "YOUR_APP_ID"
+		};
+		firebase.initializeApp(firebaseConfig);
+	</script>
+</head>
+<body>
+	<h1>Realtime Chat App</h1>
+	<form id="signupForm">
+		<label for="email">Email:</label>
+		<input type="email" id="email" name="email" required><br><br>
+<label for="password">Password:</label>
+<input type="password" id="password" name="password" required><br><br>
+<label for="confirmPassword">Confirm Password:</label>
+<input type="password" id="confirmPassword" name="confirmPassword" required><br><br>
+<button type="submit">Signup</button>
+<button type="button" id="loginButton">Login</button>
+</form>
+<script>
+	// Signup form submit event listener
+	document.getElementById('signupForm').addEventListener('submit', function(e) {
+		e.preventDefault();
+		var email = document.getElementById('email').value;
+		var password = document.getElementById('password').value;
+		var confirmPassword = document.getElementById('confirmPassword').value;
+		if (password != confirmPassword) {
+			alert("Passwords don't match.");
+			return;
+		}
+		firebase.auth().createUserWithEmailAndPassword(email, password)
+		.then(function(user) {
+			// Signup successful, redirect to chat page
+			window.location = 'chat.html';
+		})
+		.catch(function(error) {
+			// Handle signup error
+			alert(error.message);
+		});
+	});
+
+	// Login button click event listener
+	document.getElementById('loginButton').addEventListener('click', function() {
+		window.location = 'login.html';
+	});
+</script>

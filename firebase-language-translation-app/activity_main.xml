@@ -1,0 +1,29 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/input_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter text to translate" />
+
+    <Button
+        android:id="@+id/translate_button"
+        android:layout_below="@id/input_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Translate" />
+
+    <TextView
+        android:id="@+id/translated_text"
+        android:layout_below="@id/translate_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textColor="#000000"
+        android:textStyle="bold"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp" />
+
+</RelativeLayout>
